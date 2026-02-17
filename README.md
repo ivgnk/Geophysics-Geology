@@ -1,2 +1,2 @@
 # Geophysics-Geology
-Geophysics &amp; Geology P
+Geophysics &amp; Geology Python Programs
