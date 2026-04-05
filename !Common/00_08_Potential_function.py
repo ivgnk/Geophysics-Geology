@@ -12,7 +12,7 @@ from scipy.ndimage import gaussian_filter
 
 # Константа гравитации в м³·кг⁻¹·с⁻²
 G = 6.67430e-11
-# Коэффициент перевода в мГал: 1 м/с² = 100 000 мГал
+# Коэффициент перевода в мГал: 1 м/с² = 100 000 мГал
 M_TO_MGAL = 1e5
 # Перевод г/см³ в кг/м³: 1 г/см³ = 1000 кг/м³
 DENSITY_CONVERSION = 1000
@@ -66,15 +66,15 @@ def create_gravitational_field_map(n_sources=18, grid_size=250,
         r = np.sqrt(dx**2 + dy**2 + dz**2)
 
         # Избегаем деления на ноль
-        r[r == 0] = 1
+        r = np.maximum(r, 1e-6)
 
         # Компоненты гравитационного ускорения (в м/с²)
-        g_magnitude = G * mass / r**2
+        g_magnitude = G * mass / r**3
 
         # Суммируем вклады всех источников
         g_total += g_magnitude
 
-    # Переводим из м/с² в миллиГалы (1 м/с² = 100 000 мГал)
+    # Переводим из м/с² в миллиГалы (1 м/с² = 100 000 мГал)
     g_mgal = g_total * M_TO_MGAL
 
     # Применяем сглаживание для реалистичного распространения
@@ -224,7 +224,6 @@ def plot_gravitational_field(X, Y, field_mgal, sources, z_level, title="Грав
     plt.show()
 
     return fig
-
 
 
 # Основной блок программы
